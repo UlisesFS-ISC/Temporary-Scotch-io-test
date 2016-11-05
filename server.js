@@ -6,6 +6,8 @@ var morgan      = require('morgan');
 var mongoose    = require('mongoose');
 
 var jwt    = require('jsonwebtoken'); 
+var User   = require('./app/models/user');
+var Entry   = require('./app/models/entry'); // get our mongoose models
 
 // set the port of our application
 // process.env.PORT lets the port be set by Heroku
@@ -35,7 +37,7 @@ app.listen(port, function(){
 });
 
 app.get('/', function(req,res){
-	res.send('Hello this API is at  change3   '+ port+'/api');
+	res.send('Hello this API is at  change4   '+ port+'/api');
 });
 
 app.all('*', function(req, res, next) {
@@ -44,4 +46,50 @@ app.all('*', function(req, res, next) {
    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
    res.header("Access-Control-Request-Headers", "token");
    next();
+});
+
+app.post('/signup', function(req, res) {
+  if (!req.body.name || !req.body.password || !req.body.email) {
+    res.json({success: false, msg: 'Please pass all the information needed.'});
+  } else {
+    console.log(1);
+    var newUser = new User({
+      name: req.body.name,
+      password: req.body.password,
+      email: req.body.email,
+      admin:false
+    });
+    // save the user
+    newUser.save(function(err) {
+      if (err) {
+        return res.json({success: false, msg: 'Username already exists.'});
+      }
+      res.json({success: true, msg: 'Successfully created new user.'});
+    });
+  }
+});
+
+
+app.post('/authenticate', function(req, res) {
+  User.findOne({
+    name: req.body.name
+  }, function(err, user) {
+    if (err) throw err;
+ 
+    if (!user) {
+      res.send({success: false, msg: 'Authentication failed. User not found.'});
+    } else {
+      // check if password matches
+      user.comparePassword(req.body.password,req.body.name, function (err, isMatch) {
+        if (isMatch && !err) {
+          // if user is found and password is right create a token
+          var token = jwt.sign(user, config.secret);
+          // return the information including token as JSON
+          res.json({success: true, token: token});
+        } else {
+          res.send({success: false, msg: 'Authentication failed. Wrong password.'});
+        }
+      });
+    }
+  });
 });

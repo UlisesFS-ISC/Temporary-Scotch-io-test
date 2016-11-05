@@ -1,6 +1,12 @@
 var express = require('express');
 var app = express();
 
+var bodyParser  = require('body-parser');
+var morgan      = require('morgan');
+var mongoose    = require('mongoose');
+
+var jwt    = require('jsonwebtoken'); 
+
 // set the port of our application
 // process.env.PORT lets the port be set by Heroku
 var port = process.env.PORT || 8080;
@@ -11,13 +17,11 @@ app.set('view engine', 'ejs');
 // make express look in the public directory for assets (css/js/img)
 app.use(express.static(__dirname + '/public'));
 
-// set the home page route
-app.get('/', function(req, res) {
-
-	// ejs render automatically looks in the views folder
-	res.render('index');
+var port = process.env.PORT || 8080; // used to create, sign, and verify tokens
+app.listen(port, function(){
+  console.log("Express server listening on port: " + port);
 });
 
-app.listen(port, function() {
-	console.log('Our app is running on http://localhost:' + port);
+app.get('/', function(req,res){
+	res.send('Hello this API is at '+ port+'/api');
 });

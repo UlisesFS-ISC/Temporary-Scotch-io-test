@@ -93,3 +93,88 @@ app.post('/authenticate', function(req, res) {
     }
   });
 });
+
+var apiRoutes=express.Router();
+
+  
+apiRoutes.use(function(req, res, next) {
+
+
+  // check header or url parameters or post parameters for token
+  var token = req.body.token || req.query.token || req.headers.token;
+  // decode token
+  if (token) {
+
+    // verifies secret and checks exp
+    jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });    
+      } else {
+        // if everything is good, save to request for use in other routes
+        req.body.user=decoded._doc.name;
+        req.body.email=decoded._doc.email;
+        req.decoded = decoded;    
+        next();
+      }
+    });
+
+  } else {
+    // if there is no token
+    // return an error
+    return res.status(403).send({ 
+        success: false, 
+        message: 'No token provided.' 
+    });
+    
+  }
+});
+
+app.use('/api', apiRoutes);
+
+
+
+
+//*****************Token Entry only
+
+apiRoutes.get('/chronoInfo', function(req, res) { 
+  Entry.find({'user':req.body.user,'email':req.body.email }, function(err, entries) {
+    res.send({msg: entries});
+  });
+}); 
+
+apiRoutes.post('/insertActivity', function(req, res) {
+  if (!req.body.name || !req.body.timeelapsed || !req.body.user || !req.body.email) {
+    res.json({success: false, msg: 'Please pass all the information required.'});
+  } else {
+    console.log(1);
+    var newEntry = new Entry({
+      name: req.body.name,
+      timeelapsed: req.body.timeelapsed,
+      user: req.body.user,
+      email: req.body.email,
+      dateposted: new Date()
+    });
+    // save the user
+    newEntry.save(function(err) {
+      if (err) {
+        return res.json({success: false, msg: 'Entry already exists.'});
+      }
+      res.json({success: true, msg: 'Successfully inserted new Entry.'});
+    });
+  }
+});
+
+apiRoutes.post('/removeActivity', function(req, res) {
+
+  Entry.remove(req.body, function(err, result) {
+    if (err) throw err;
+ 
+    if (!result) {
+      res.send({success: false, msg: 'Deletion failed. Entry not found.'});
+    } else {
+      // check if password matches
+      res.json({success: true, msg: 'Successfully deleted an Entry.'});
+    }
+  });
+});

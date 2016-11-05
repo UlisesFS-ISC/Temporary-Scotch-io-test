@@ -14,8 +14,8 @@ var port = process.env.PORT || 8080;
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 
-var databaseaddress= "mongodb://Ulises:timerbolt4real@ds143767.mlab.com:43767/timerbolt";
-mongoose.connect(databaseaddress); // connect to database
+var DATABASE_URL= "mongodb://Ulises:timerbolt4real@ds143767.mlab.com:43767/timerbolt";
+mongoose.connect(DATABASE_URL); // connect to database
 app.set('superSecret', 'blundell'); // secret variable
 
 

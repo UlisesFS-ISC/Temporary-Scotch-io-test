@@ -35,5 +35,13 @@ app.listen(port, function(){
 });
 
 app.get('/', function(req,res){
-	res.send('Hello this API is at  change2'+ port+'/api');
+	res.send('Hello this API is at  change3   '+ port+'/api');
+});
+
+app.all('*', function(req, res, next) {
+   res.header('Access-Control-Allow-Origin', "*");
+   res.header("Access-Control-Allow-Headers", "Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With, token");
+   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+   res.header("Access-Control-Request-Headers", "token");
+   next();
 });

@@ -36,10 +36,6 @@ app.listen(port, function(){
   console.log("Express server listening on port:" + port);
 });
 
-app.get('/', function(req,res){
-	res.send('Hello this API is at  change4   '+ port+'/api');
-});
-
 app.all('*', function(req, res, next) {
    res.header('Access-Control-Allow-Origin', "*");
    res.header("Access-Control-Allow-Headers", "Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With, token");
@@ -47,6 +43,11 @@ app.all('*', function(req, res, next) {
    res.header("Access-Control-Request-Headers", "token");
    next();
 });
+
+app.get('/', function(req,res){
+	res.send('Hello this API is at  change4   '+ port+'/api');
+});
+
 
 app.post('/signup', function(req, res) {
   if (!req.body.name || !req.body.password || !req.body.email) {
@@ -83,7 +84,7 @@ app.post('/authenticate', function(req, res) {
       user.comparePassword(req.body.password,req.body.name, function (err, isMatch) {
         if (isMatch && !err) {
           // if user is found and password is right create a token
-          var token = jwt.sign(user, config.secret);
+          var token = jwt.sign(user, app.get('superSecret'));
           // return the information including token as JSON
           res.json({success: true, token: token});
         } else {

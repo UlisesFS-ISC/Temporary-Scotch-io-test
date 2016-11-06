@@ -1,7 +1,5 @@
-heroku-node
+TimerBolt API
 ===========
-
-Code for the tutorial by @sevilayha: Deploying Node Apps to Heroku
-"# Temporary-Scotch-io-test" 
-"# Temporary-Scotch-io-test" 
-"# Temporary-Scotch-io-test" 
+A Node.JS Rest API (MEAN STACK) that provides TimerBolt application its backend services. 
+Uses JWT for token encryption to mantain the application Stateless and crypto to encrypt users passwords.
+ 

@@ -154,9 +154,9 @@ app.use('/user', apiRoutes);
 
 //*****************Token Entry only
 
-apiRoutes.get('/timeEntries', function(req, res) {
+apiRoutes.get('/timeEntry', function(req, res) {
 
-    timeEntry.find({'name':req.body.user }, function(err, entries) {
+    timeEntry.find({'userName':req.body.user }, function(err, entries) {
         if(err) {
             return res.status(204).send({
                 success: false,
@@ -168,9 +168,9 @@ apiRoutes.get('/timeEntries', function(req, res) {
     });
 });
 
-apiRoutes.get('/timeEntry', function(req, res) {
+apiRoutes.get('/timeEntry/:uuid', function(req, res) {
 
-    timeEntry.findOne({'uuid':req.body.uuid }, function(err, entries) {
+    timeEntry.findOne({'uuid':req.params.uuid }, function(err, entries) {
         if(err) {
             return res.status(204).send({
                 success: false,
@@ -220,10 +220,11 @@ apiRoutes.delete('/timeEntry', function(req, res) {
     });
 });
 
-apiRoutes.get('/scheduleEntries', function(req, res) {
-
-    scheduleEntry.find({'userName':req.body.userName }, function(err, entries) {
-        if(error) {
+apiRoutes.get('/scheduleEntry', function(req, res) {
+    console.log(req.body);
+    console.log(req.body);
+    scheduleEntry.find({'userName':req.body.user }, function(err, entries) {
+        if(err) {
             return res.status(204).send({
                 success: false,
                 message: 'No entries were found.'
@@ -235,9 +236,9 @@ apiRoutes.get('/scheduleEntries', function(req, res) {
 
 });
 
-apiRoutes.get('/scheduleEntry', function(req, res) {
+apiRoutes.get('/scheduleEntry/:uuid', function(req, res) {
 
-    scheduleEntry.findOne({'uuid':req.body.uuid }, function(err, entries) {
+    scheduleEntry.findOne({'uuid':req.params.uuid }, function(err, entries) {
         if(err) {
             return res.status(204).send({
                 success: false,
@@ -257,26 +258,19 @@ apiRoutes.post('/scheduleEntry', function(req, res) {
 
         var newScheduleEntry = new scheduleEntry({
             uuid: uuidv1(),
-
-            scheduleEntryName: req.body.timeEntryName,
-
+            scheduleEntryName: req.body.scheduleEntryName,
             scheduledDayTime: req.body.scheduledDayTime,
-
             userName: req.body.userName,
-
             activityTag: req.body.activityTag,
-
             datePosted: new Date(),
-
-            activeInDays: req.body.activeInDays,
-
+            activeInDays: req.body.activeInDays || [],
             singleUse: req.body.singleUse
     });
 
         // save the entry
         newScheduleEntry.save(function(err) {
             if (err) {
-                return res.json({success: false, msg: err.msg});
+                return res.json({success: false, msg: err.message});
             }
             res.json({success: true, msg: 'Successfully inserted new Entry.'});
         });

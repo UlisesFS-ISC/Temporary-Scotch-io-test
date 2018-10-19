@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema= mongoose.Schema;
 
-var ScheduleEntrySchema = new Schema({
+var ScheduleEntry = new Schema({
     uuid: {
         type:String,
         required:true
@@ -38,10 +38,10 @@ var ScheduleEntrySchema = new Schema({
     }
 });
 
-ScheduleEntrySchema.pre('save',function(next){
-    var ScheduleEntrySchema=this;
+ScheduleEntry.pre('save',function(next){
+    var ScheduleEntry=this;
     return next();
 });
 
 
-module.exports = mongoose.model('ScheduleEntrySchema', ScheduleEntrySchema);
+module.exports = mongoose.model('ScheduleEntry', ScheduleEntry);

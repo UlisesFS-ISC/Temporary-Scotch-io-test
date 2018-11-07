@@ -184,14 +184,14 @@ apiRoutes.get('/timeEntry/:uuid', function(req, res) {
 
 apiRoutes.post('/timeEntry', function (req, res) {
 
-    if (!req.body.userName || !req.body.timeElapsed || !req.body.timeEntryName) {
+    if (!req.body.user || !req.body.timeElapsed || !req.body.timeEntryName) {
         res.json({success: false, msg: 'Please pass all the information required.'});
     } else {
         var newTimeEntry = new timeEntry({
             uuid: uuidv1(),
             timeEntryName: req.body.timeEntryName,
             timeElapsed: req.body.timeElapsed,
-            userName: req.body.userName,
+            userName: req.body.user,
             activityTag: req.body.activityTag,
             datePosted: new Date()
         });
@@ -252,7 +252,7 @@ apiRoutes.get('/scheduleEntry/:uuid', function(req, res) {
 
 apiRoutes.post('/scheduleEntry', function(req, res) {
 
-    if (!req.body.userName || !req.body.scheduledDayTime || !req.body.scheduleEntryName || !req.body.activityTag || !req.body.singleUse) {
+    if (!req.body.user || !req.body.scheduledDayTime || !req.body.scheduleEntryName || !req.body.activityTag || !req.body.singleUse) {
         res.json({success: false, msg: 'Please pass all the information required.'});
     } else {
 
@@ -260,7 +260,7 @@ apiRoutes.post('/scheduleEntry', function(req, res) {
             uuid: uuidv1(),
             scheduleEntryName: req.body.scheduleEntryName,
             scheduledDayTime: req.body.scheduledDayTime,
-            userName: req.body.userName,
+            userName: req.body.user,
             activityTag: req.body.activityTag,
             datePosted: new Date(),
             activeInDays: req.body.activeInDays || [],

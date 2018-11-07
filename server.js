@@ -252,7 +252,7 @@ apiRoutes.get('/scheduleEntry/:uuid', function(req, res) {
 
 apiRoutes.post('/scheduleEntry', function(req, res) {
 
-    if (!req.body.user || !req.body.scheduledDayTime || !req.body.scheduleEntryName || !req.body.activityTag || !req.body.singleUse) {
+    if (!req.body.user || !req.body.scheduledDayTime || !req.body.scheduleEntryName || !req.body.activityTag || req.body.singleUse === undefined) {
         res.json({success: false, msg: 'Please pass all the information required.'});
     } else {
 

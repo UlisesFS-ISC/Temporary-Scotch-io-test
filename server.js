@@ -199,7 +199,7 @@ apiRoutes.post('/timeEntry', function (req, res) {
         // save the time entry
         newTimeEntry.save(function (err) {
             if (err) {
-                return res.json({success: false, msg: 'Entry already exists.'});
+                return res.json({success: false, msg: 'Entry already exists.', entry:newTimeEntry});
             }
             res.json({success: true, msg: 'Successfully inserted new Entry.'});
         });
@@ -213,17 +213,15 @@ apiRoutes.delete('/timeEntry', function(req, res) {
         console.log(req.body);
         if (err) throw err;
         if (!result) {
-            res.send({success: false, msg: 'Deletion failed. Entry not found.'});
+            res.send({success: false, msg: 'Deletion failed. Entry not found.', error:err});
         } else {
             //  if data matches
-            res.json({success: true, msg: 'Successfully deleted an Entry.'});
+            res.json({success: true, msg: 'Successfully deleted an Entry.', result:'result'});
         }
     });
 });
 
 apiRoutes.get('/scheduleEntry', function(req, res) {
-    console.log(req.body);
-    console.log(req.body);
     scheduleEntry.find({'userName':req.body.user }, function(err, entries) {
         if(err) {
             return res.status(204).send({
@@ -273,7 +271,7 @@ apiRoutes.post('/scheduleEntry', function(req, res) {
             if (err) {
                 return res.json({success: false, msg: err.message});
             }
-            res.json({success: true, msg: 'Successfully inserted new Entry.'});
+            res.json({success: true, msg: 'Successfully inserted new Entry.', entry:newScheduleEntry});
         });
     }
 });
@@ -283,10 +281,10 @@ apiRoutes.delete('/scheduleEntry', function(req, res) {
     scheduleEntry.findOneAndRemove({'uuid': req.body.uuid}, function(err, result) {
         if (err) throw err;
         if (!result) {
-            res.send({success: false, msg: 'Deletion failed. Entry not found.'});
+            res.send({success: false, msg: 'Deletion failed. Entry not found.', error:err});
         } else {
             // check if data matches
-            res.json({success: true, msg: 'Successfully deleted an Entry.'});
+            res.json({success: true, msg: 'Successfully deleted an Entry.', result:result});
         }
     });
 });

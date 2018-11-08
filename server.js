@@ -192,7 +192,8 @@ apiRoutes.post('/timeEntry', function (req, res) {
             timeEntryName: req.body.timeEntryName,
             timeElapsed: req.body.timeElapsed,
             userName: req.body.user,
-            activityTag: req.body.activityTag,
+            activityTag: req.body.activityTag || 'LEISURE',
+            timerType: req.body.timerType || 'TIMER',
             datePosted: new Date()
         });
         // save the time entry

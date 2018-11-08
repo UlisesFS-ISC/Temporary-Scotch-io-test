@@ -44,7 +44,7 @@ var TimeEntrySchema = new Schema({
 
         type:String,
 
-        default: 'LEISURE'
+        default: 'N/A'
 
     },
 
@@ -55,7 +55,16 @@ var TimeEntrySchema = new Schema({
         enum: ['PRODUCTIVITY', 'LEISURE', 'SKILL_LEARNING', 'ERRAND', 'IMPORTANT'],
 
         default: 'LEISURE'
+    },
+    timerType: {
+
+        type: String,
+
+        enum: ['TIMER', 'CHRONOMETER', 'POMODORO'],
+
+        default: 'TIMER'
     }
+
 });
 
 TimeEntrySchema.pre('save',function(next){

@@ -199,7 +199,7 @@ apiRoutes.post('/timeEntry', function (req, res) {
         // save the time entry
         newTimeEntry.save(function (err) {
             if (err) {
-                return res.json({success: false, msg: 'Entry already exists.', entry:newTimeEntry});
+                return res.json({success: false, msg: 'Entry already exists.', entry:newTimeEntry, error:err});
             }
             res.json({success: true, msg: 'Successfully inserted new Entry.'});
         });
@@ -269,7 +269,7 @@ apiRoutes.post('/scheduleEntry', function(req, res) {
         // save the entry
         newScheduleEntry.save(function(err) {
             if (err) {
-                return res.json({success: false, msg: err.message});
+                return res.json({success: false, msg: err.message, error:err});
             }
             res.json({success: true, msg: 'Successfully inserted new Entry.', entry:newScheduleEntry});
         });

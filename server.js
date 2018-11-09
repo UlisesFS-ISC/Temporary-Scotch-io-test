@@ -201,7 +201,7 @@ apiRoutes.post('/timeEntry', function (req, res) {
             if (err) {
                 return res.json({success: false, msg: 'Entry already exists.', entry:newTimeEntry, error:err});
             }
-            res.json({success: true, msg: 'Successfully inserted new Entry.'});
+            res.json({success: true, msg: 'Successfully inserted new Entry.', entry:newTimeEntry});
         });
     }
 

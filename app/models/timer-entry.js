@@ -60,7 +60,7 @@ var TimeEntrySchema = new Schema({
 
         type: String,
 
-        enum: ['TIMER', 'CHRONOMETER', 'POMODORO'],
+        enum: ['TIMER', 'CHRONOMETER', 'POMODORO', 'COUNTDOWN'],
 
         default: 'TIMER'
     }

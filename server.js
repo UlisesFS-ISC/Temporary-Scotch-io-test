@@ -14,24 +14,6 @@ var scheduleEntry = require('./app/models/schedule-entry');
 // process.env.PORT lets the port be set by Heroku
 var port = process.env.PORT || 8080;
 
-/*
-// Construct a schema, using GraphQL schema language
-var schema = graphql.buildSchema(`
-  type Query {
-    hello: String
-  }
-`);
-// resolver
-var root = {
-        hello: function() {
-            return 'Hello world!';
-        }
-};
-*/
-
-
-
-// set the view engine to ejs
 app.set('view engine', 'ejs');
 
 var DATABASE_URL = "mongodb://Ulises:timerbolt4real@ds143767.mlab.com:43767/timerbolt";
@@ -199,7 +181,7 @@ apiRoutes.post('/timeEntry', function (req, res) {
         // save the time entry
         newTimeEntry.save(function (err) {
             if (err) {
-                return res.json({success: false, msg: 'Entry already exists.', entry:newTimeEntry, error:err});
+                return res.json({success: false, msg: 'Entry could not be inserted.', error:err});
             }
             res.json({success: true, msg: 'Successfully inserted new Entry.', entry:newTimeEntry});
         });
@@ -269,7 +251,7 @@ apiRoutes.post('/scheduleEntry', function(req, res) {
         // save the entry
         newScheduleEntry.save(function(err) {
             if (err) {
-                return res.json({success: false, msg: err.message, error:err});
+                return res.json({success: false, msg: 'Could not save this entry', error:err});
             }
             res.json({success: true, msg: 'Successfully inserted new Entry.', entry:newScheduleEntry});
         });
